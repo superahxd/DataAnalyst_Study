@@ -139,6 +139,14 @@ select count(*)
 from rental r
 where date(rental_date)='2005-06-20'
 ```
+```sql
+select count(distinct rental_id)
+from rental r
+where date(rental_date)='2005-06-20'
+```
+
+> 왜 distinct를 썼을까? 비디오 갯수가 문제인건데 아이디를 distict하면 한 고객이 여러개 가져온 목록을 오히려 잃어버릴 수 있지 않나?
+
 </br>
 
 #### 문제15번)	film 테이블을 활용하여, 2006년에 출시가 되고 rating 이 'G' 등급에 해당하며, 대여기간이 3일에 해당하는  것에 대한 film 테이블의 모든 컬럼을 알려주세요.
@@ -172,7 +180,7 @@ where rental_duration >= 7
 ```sql
 select film_id , title , description 
 from film f 
-where rental_duration >= 7
+where rental_duration = 3 or rental_duration = 5
 ```
 </br>
 
