@@ -76,21 +76,43 @@ where s.first_name || ' ' || s.last_name  = 'Jon Stephens'
 문제7번) 배우가 출연하지 않는 영화의 film_id, title, release_year, rental_rate, length 를 알려주세요.
 
 ```sql
+select f.film_id , f.title , f.release_year , f.rental_rate , f.length 
+from film f
+left outer join film_actor fa on fa.film_id = f.film_id 
+left outer join actor a on fa.actor_id = a.actor_id
+where a.actor_id is null
 ```
+none 아니고 null!
 </br>
 문제8번) store 상점 id별 주소 (address, address2, distict) 와 해당 상점이 위치한 city 주소를 알려주세요.
 
 ```sql
+select s.address_id , a.address , a.address2 , a.district , c.city 
+from store s
+join address a on s.address_id = a.address_id 
+join city c on a.city_id = c.city_id 
+
 ```
 </br>
 문제9번) 고객의 id 별로 고객의 이름 (first_name, last_name), 이메일, 고객의 주소 (address, district), phone번호, city, country 를 알려주세요.
 
 ```sql
+select c.customer_id , c.first_name ||', '|| c.last_name as name , c.email, a.address ||', '|| a.district as address, a.phone , c2.city , c3.country 
+from customer c 
+join address a on c.address_id = a.address_id 
+join city c2 on a.city_id = c2.city_id 
+join country c3 on c2.country_id = c3.country_id  
 ```
 </br>
 문제10번) country 가 china 가 아닌 지역에 사는, 고객의 이름(first_name, last_name)과 , email, phonenumber, country, city 를 알려주세요
 
 ```sql
+select c.first_name , c.last_name , c.email , a.phone , c3.country , c2.city 
+from customer c 
+join address a on c.address_id = a.address_id 
+join city c2 on a.city_id = c2.city_id 
+join country c3 on c2.country_id = c3.country_id 
+where c3.country != 'China'
 ```
 </br>
 문제11번) Horror 카테고리 장르에 해당하는 영화의 이름과 description 에 대해서 알려주세요
