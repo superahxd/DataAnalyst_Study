@@ -116,8 +116,12 @@ where c3.country != 'China'
 ```
 </br>
 문제11번) Horror 카테고리 장르에 해당하는 영화의 이름과 description 에 대해서 알려주세요
-
 ```sql
+select f.title , f.description 
+from category c 
+join film_category fc on fc.category_id = c.category_id
+join film f on fc.film_id = f.film_id 
+where c."name" = 'Horror'
 ```
 </br>
 문제12번) Music 장르이면서, 영화길이가 60~180분 사이에 해당하는 영화의 title, description, length 를 알려주세요.
@@ -125,25 +129,92 @@ where c3.country != 'China'
 - 영화 길이가 짧은 순으로 정렬해서 알려주세요.
 
 ```sql
+from category c 
+join film_category fc on fc.category_id = c.category_id
+join film f on fc.film_id = f.film_id 
+where c."name" = 'Music' and f.length between 60 and 180
+order by f.length asc
 ```
 </br>
-문제13번) actor 테이블을 이용하여,  배우의 ID, 이름, 성 컬럼에 추가로    'Angels Life' 영화에 나온 영화 배우 여부를 Y , N 으로 컬럼을 추가 표기해주세요.  해당 컬럼은 angelslife_flag로 만들어주세요.
+~문제13번)~ actor 테이블을 이용하여,  배우의 ID, 이름, 성 컬럼에 추가로    'Angels Life' 영화에 나온 영화 배우 여부를 Y , N 으로 컬럼을 추가 표기해주세요.  해당 컬럼은 angelslife_flag로 만들어주세요.
 
 ```sql
+select a.actor_id , a.first_name , a.last_name ,
+case 	
+	when f.title = 'Angels Life' then 'Y'
+	else 'N'
+end as angelslife_flag
+from actor a 
+join film_actor fa on a.actor_id = fa.actor_id 
+join film f on fa.film_id = f.film_id;
 ```
+> 제대로 된 답이 안나옴
+
+```sql
+select a.actor_id , a.first_name, a.last_name , case when a.actor_id in (
+		select actor_id
+		  from film f
+		 inner join film_actor fa 
+			on f.film_id  = fa.film_id
+		 where f.title ='Angels Life') then 'Y'
+		 else 'N'
+		 end as angelslife_flag
+  from actor a;
+```
+> 서브쿼리 넣는 거에 아직 안 익숙해서 연습이 필요할 듯
 </br>
 문제14번) 대여일자가 2005-06-01~ 14일에 해당하는 주문 중에서 , 직원의 이름(이름 성) = 'Mike Hillyer' 이거나  고객의 이름이 (이름 성) ='Gloria Cook'  에 해당 하는 rental 의 모든 정보를 알려주세요.
 
 - 추가로 직원이름과, 고객이름에 대해서도 fullname 으로 구성해서 알려주세요.
 
 ```sql
+select r.*, s.first_name ||' '||s.last_name as staff_name , c.first_name ||' '||c.last_name as customer_name
+from rental r
+join staff s on r.staff_id = s.staff_id
+join customer c on r.customer_id = c.customer_id 
+where date(r.rental_date) between '2005-06-01' and '2005-06-14'
+and (s.first_name ||' '||s.last_name = 'Mike Hillyer'
+or c.first_name ||' '||c.last_name = 'Gloria Cook')
 ```
+> 정답이랑 좀 다른데 조회는 똑같이 됨
+
+```sql
+select r.*,
+c.first_name , c.last_name ,
+s.first_name , s.last_name
+from rental as r 	
+left outer join customer as  c on r.customer_id  =  c.customer_id
+left outer join staff s on r.staff_id  = s.staff_id
+where
+( s.first_name || ' ' ||s.last_name ='Mike Hillyer'
+or c.first_name  || ' '|| c.last_name  ='Gloria Cook'
+)
+and  date(rental_date) between '2005-06-01' and '2005-06-14'
+```
+
 </br>
 문제15번) 대여일자가 2005-06-01~ 14일에 해당하는 주문 중에서 , 직원의 이름(이름 성) = 'Mike Hillyer' 에 해당 하는 직원에게  구매하지 않은  rental 의 모든 정보를 알려주세요.
 
 - 추가로 직원이름과, 고객이름에 대해서도 fullname 으로 구성해서 알려주세요.
 
+```sql
+select r.*,s.first_name ||' '||s.last_name as staff_name , c.first_name ||' '||c.last_name as customer_name
+from rental as r 	
+left outer join customer as  c on r.customer_id  =  c.customer_id
+left outer join staff s on r.staff_id  = s.staff_id
+where s.first_name || ' ' ||s.last_name !='Mike Hillyer'
+and  date(rental_date) between '2005-06-01' and '2005-06-14'
+```
 
 ```sql
+select r.*,
+c.first_name , c.last_name ,
+s.first_name , s.last_name
+from rental as r 	
+left outer join customer as  c on r.customer_id  =  c.customer_id
+left outer join staff s on r.staff_id  = s.staff_id
+where
+s.first_name || ' ' ||s.last_name not in ('Mike Hillyer')
+and  date(rental_date) between '2005-06-01' and '2005-06-14'
 ```
 </br>
