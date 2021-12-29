@@ -134,21 +134,40 @@ on c.customer_id = p.customer_id ;
 
 문제8번) rental 테이블을  기준으로,   2005년 5월26일에 대여를 기록한 고객 중, 하루에 2번 이상 대여를 한 고객의 ID 값을 확인해주세요.
 ```sql
+select customer_id , count(*) 
+from rental r 
+where date(rental_date) = '2005-05-26'
+group by r.customer_id 
+having count(*)>1
 ```
 </br>
 문제9번) film_actor 테이블을 기준으로, 출현한 영화의 수가 많은  5명의 actor_id 와 , 출현한 영화 수 를 알려주세요.
 ```sql
+select actor_id , count(*)
+from film_actor fa 
+group by actor_id 
+order by count(*) desc 
+limit 5
 ```
 </br>
 
 문제10번) payment 테이블을 기준으로,  결제일자가 2007년2월15일에 해당 하는 주문 중에서  ,  하루에 2건 이상 주문한 고객의  총 결제 금액이 10달러 이상인 고객에 대해서 알려주세요.
 (고객의 id,  주문건수 , 총 결제 금액까지 알려주세요)
 ```sql
+select customer_id , count(*), sum(amount) 
+from payment p 
+where date(payment_date) = '2007-02-15'
+group by customer_id 
+having count(*) > 1 and sum(amount) >= 10
 ```
 </br>
 
 문제11번) 사용되는 언어별 영화 수는?
 ```sql
+select l."name", count(f.title) 
+from film f 
+join "language" l on l.language_id =  f.language_id 
+group by l."name" 
 ```
 </br>
 
