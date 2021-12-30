@@ -142,6 +142,7 @@ having count(*)>1
 ```
 </br>
 문제9번) film_actor 테이블을 기준으로, 출현한 영화의 수가 많은  5명의 actor_id 와 , 출현한 영화 수 를 알려주세요.
+
 ```sql
 select actor_id , count(*)
 from film_actor fa 
@@ -149,6 +150,7 @@ group by actor_id
 order by count(*) desc 
 limit 5
 ```
+
 </br>
 
 문제10번) payment 테이블을 기준으로,  결제일자가 2007년2월15일에 해당 하는 주문 중에서  ,  하루에 2건 이상 주문한 고객의  총 결제 금액이 10달러 이상인 고객에 대해서 알려주세요.
