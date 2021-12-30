@@ -173,6 +173,12 @@ group by l."name"
 
 문제12번) 40편 이상 출연한 영화 배우(actor) 는 누구인가요?
 ```sql
+select a.first_name ,a.last_name , count(fa.film_id)
+from film_actor fa
+join actor a on fa.actor_id =a.actor_id 
+group by a.actor_id 
+having count(fa.film_id) >= 40
+order by count(fa.film_id) desc 
 ```
 </br>
 
@@ -189,5 +195,35 @@ HINT
 반올림 하는 함수는 ROUND 입니다.	
 */
 ```sql
+select sum(amount),
+case 
+when sum(amount) >= 151 then 'A'
+when sum(amount) >= 101 then 'B'
+when sum(amount) >= 51 then 'C'
+else 'D'
+end as grade
+from payment p 
+group by customer_id
 ```
+> 고객 등급별 고객수를 구하려면 다시 해야하는거 아닌지..
+
+```sql
+select case when rental_amount <= 50 then 'D'
+when rental_amount between 51  and 100 then 'C'
+when rental_amount between 101 and 150 then 'B'
+when rental_amount >= 151  then 'A' end customer_class
+, count(*) cnt
+from
+(
+select r.customer_id , round(sum(p.amount) ,0) rental_amount
+from rental r
+inner join payment p on p.rental_id = r.rental_id
+group by r.customer_id
+) r
+group by case when rental_amount <= 50 then 'D'
+when rental_amount between 51  and 100 then 'C'
+when rental_amount between 101 and 150 then 'B'
+when rental_amount >= 151  then 'A' end
+```
+ㅠㅠ 못풀겠다.. 연습더해야할듯 데이터캠프가자..
 </br>
