@@ -62,7 +62,11 @@ WHERE  film_id IN (SELECT film_id
 
 문제6번) 직원과  고객의 이름이 동일한 사람이 혹시 있나요? 있다면, 해당 사람의 이름과 성을 알려주세요.
 
-
+select first_name , last_name 
+from staff s 
+intersect
+select first_name , last_name 
+from customer c
 
 ```sql
 ```
