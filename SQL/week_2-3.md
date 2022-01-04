@@ -45,9 +45,26 @@ WHERE  film_id IN (SELECT film_id
 
 - category 테이블을 이용해서 알려주세요.
 
+```sql
+select distinct film_id
+from film_category fc 
+where category_id not in 
+(select category_id from category c
+where name in ('A%','Horror'))                                                                                                                                                 ```
+
+distinct를 안하면 답이 다른데 뭐가 중복된건지 이해가 안간다... 뭐가 겹쳐서 없어진거냐 ㅠㅠ
+답답해 죽겠음
 
 ```sql
+select film_id
+from film_category fc
+except
+select category_id from category c
+where name in ('A%','Horror')
 ```
+
+film_id 와 category_id를 맞춰줘야 한다는데 잘만 나온다 이건 또 왜이런지..
+
 </br>
 
 문제5번) Staff  의  id , 이름, 성 에 대한 데이터와 , Customer 의 id, 이름 , 성에 대한 데이터를  하나의  데이터셋의 형태로 보여주세요.
