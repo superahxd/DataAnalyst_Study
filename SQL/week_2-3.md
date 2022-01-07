@@ -28,6 +28,14 @@ WHERE  film_id IN (SELECT film_id
 
 
 ```sql
+select distinct actor_id 
+from film_actor fa
+where film_id in (select film_id from film where rating = 'R')
+intersect
+select actor_id
+from film_actor fa
+where film_id in (select film_id from film where title = 'Alone Trip')
+
 ```
 </br>
 
