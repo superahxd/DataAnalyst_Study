@@ -75,14 +75,26 @@ film_id 와 category_id를 맞춰줘야 한다는데 잘만 나온다 이건 또
 
 </br>
 
-문제5번) Staff  의  id , 이름, 성 에 대한 데이터와 , Customer 의 id, 이름 , 성에 대한 데이터를  하나의  데이터셋의 형태로 보여주세요.
+~문제5번)~ Staff  의  id , 이름, 성 에 대한 데이터와 , Customer 의 id, 이름 , 성에 대한 데이터를  하나의  데이터셋의 형태로 보여주세요.
 
 - 컬럼 구성 : id, 이름 , 성, flag (직원/고객여부) 로 구성해주세요.
 
 
-
 ```sql
+SELECT staff_id,
+       first_name,
+       last_name,
+       'Staff' AS flag
+FROM   staff
+UNION ALL
+SELECT customer_id,
+       first_name,
+       last_name,
+       'Customer' AS flag
+FROM   customer
 ```
+
+
 </br>
 
 문제6번) 직원과  고객의 이름이 동일한 사람이 혹시 있나요? 있다면, 해당 사람의 이름과 성을 알려주세요.
