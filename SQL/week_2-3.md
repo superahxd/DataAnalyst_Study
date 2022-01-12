@@ -44,10 +44,37 @@ where film_id in (select film_id from film where title = 'Alone Trip')
 - film_actor 테이블와 film 테이블을 이용하세요.
 - union, unionall, intersect, except 중 상황에 맞게 사용해주세요.
 
+```sql
+select distinct fa.actor_id 
+from film f
+inner join film_actor fa on f.film_id = fa.film_id
+where f.rating = 'G'
+
+except 
+
+select distinct fa.actor_id 
+from film f
+inner join film_actor fa on f.film_id = fa.film_id
+group by fa.actor_id 
+having count(f.film_id) >= 20    
+```
 
 ```sql
+SELECT actor_id
+FROM   film_actor fa
+WHERE  film_id IN (SELECT film_id
+                   FROM   film
+                   WHERE  rating = 'G')
+EXCEPT
+
+SELECT actor_id
+FROM   film_actor fa
+GROUP  BY actor_id
+HAVING Count(DISTINCT film_id) >= 20
 ```
+굳이 서브 쿼리를 써야하나?
 </br>
+
 
 문제4번) 필름 중에서,  필름 카테고리가 Action, Animation, Horror 에 해당하지 않는 필름 아이디를 알려주세요.
 
