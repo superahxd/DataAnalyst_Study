@@ -111,16 +111,62 @@ from customer c
 
 문제7번) 반납이 되지 않은 대여점(store)별 영화 재고 (inventory)와 전체 영화 재고를 같이 구하세요. (union all)
 
-
-
 ```sql
+select null as Null , count (*)
+from rental r
+inner join inventory i on r.inventory_id = i.inventory_id 
+where r.return_date is null
+union all 
+select i.store_id , count(*)
+from rental r
+inner join inventory i on r.rental_id = i.inventory_id 
+where r.return_date is null
+group by i.store_id 
 ```
+```sql
+select null as Null , count (*)
+from rental r
+inner join inventory i on r.inventory_id = i.inventory_id 
+where r.return_date is null
+union all 
+select i.store_id , count(*)
+from rental r
+inner join inventory i on r.inventory_id = i.inventory_id 
+where r.return_date is null
+group by i.store_id 
+```
+ON 조건을 제대로 쓰자!!
 </br>
 
 문제8번) 국가(country)별 도시(city)별 매출액, 국가(country)매출액 소계 그리고 전체 매출액을 구하세요. (union all)
 
 
-
 ```sql
+select c3.country, c2.city, sum(p.amount)
+from payment p
+inner join customer c on p.customer_id = c.customer_id
+inner join address a on c.address_id = a.address_id
+inner join city c2 on a.city_id = c2.city_id
+inner join country c3 on c2.country_id = c3.country_id
+group by c3.country , c2.city
+
+union all 
+select c3.country, null as null, sum(p.amount)
+from payment p
+inner join customer c on p.customer_id = c.customer_id
+inner join address a on c.address_id = a.address_id
+inner join city c2 on a.city_id = c2.city_id
+inner join country c3 on c2.country_id = c3.country_id
+group by c3.country
+
+union all
+select null as null, null as null, sum(p.amount)
+from payment p
+inner join customer c on p.customer_id = c.customer_id
+inner join address a on c.address_id = a.address_id
+inner join city c2 on a.city_id = c2.city_id
+inner join country c3 on c2.country_id = c3.country_id
 ```
+union에서 가장 중요한 점은 select 요소를 맞춰 주는 것이다.
+하 겨우 끝났다 이장..
 </br>
