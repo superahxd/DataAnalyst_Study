@@ -33,24 +33,37 @@ group by o.customerid
 SELECT custfirstname || ' ' || custlastname AS full_name
 	FROM customers c
 WHERE NOT EXISTS(select *
-					from orders o 
-					join order_details od on o.ordernumber = od.ordernumber
-					join products p on od.productnumber = p.productnumber 
-					where o.customerid  = c.customerid  and p.productname like '%Helmet%'
+		from orders o 
+		join order_details od on o.ordernumber = od.ordernumber
+		join products p on od.productnumber = p.productnumber 
+		where o.customerid  = c.customerid  and p.productname like '%Helmet%'
                  )
 ```
+이력이 없는 것을 구하려면 not exists
 
 3.모든 제품 과 주문 일자를 나열하세요. (주문되지 않은 제품도 포함해서 보여주세요.)
 
 ```sql
-
+select p.productname, od.ordernumber , o.orderdate 
+from products p
+left outer join order_details od on p.productnumber = od.productnumber 
+left outer join orders o on o.ordernumber = od.ordernumber 
 ```
 
 4.캘리포니아 주와 캘리포니아 주가 아닌 STATS 로 구분하여 각 주문량을 알려주세요. (CASE문 사용)
 
 ```sql
+select nt.states , count(nt.ordernumber) as order_cnt
+from (select c.custstate, o.ordernumber , 
+		case when custstate = 'CA' then 'CA'
+		else 'No_CA' 
+		end as states
+	from customers c
+	join orders o on o.customerid = c.customerid) as nt
+group by nt.states
 
 ```
+에휴 섭쿼리 아직도 모르겠네
 
 5.공급 업체 와 판매 제품 수를 나열하세요. 단 판매 제품수가 2개 이상인 곳만 보여주세요.
 
