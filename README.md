@@ -1,4 +1,4 @@
-#📝 DataAnalyst_Study
+# 📝 DataAnalyst_Study
 
 ### SQL
 - 하루에 한 문제는 꼭 풀기(주 5문제)
