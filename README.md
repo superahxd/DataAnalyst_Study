@@ -1,17 +1,27 @@
-# DataAnalyst_Study
+#📝 DataAnalyst_Study
 
-📝
 ### SQL
 - 하루에 한 문제는 꼭 풀기(주 5문제)
-### Growth Team
-- 전체 내용 분석보다 핵심 내용 분석 
-- 책읽기에서 끝나는게 아니라 직접 데이터를 구하고,
-- 실제로 문제를 정의하고 가설을 세워보는것 까지
-> 린 분석 - Lean Analytics,
- 진화된 마케팅 그로스 해킹 - Growth Hacking,
- 팩트풀니스 - Factfulness
-### Statistics
-- 목표를 정하고 (ex 베이지안 이라면 우도 혹은 조건부 확률) 본인이 공부해서 공유.
-- 통계적인 실험도 진행하도록 하여, 프로젝트를 하나 만들수 있도록 진행한다.
-> <세상에서 가장 쉬운 통계학 입문>
-<데이터 과학을 위한 통계 >
+
+
+## Database
+
+
+![image](https://user-images.githubusercontent.com/74064551/149729943-691ed853-cc72-4a4f-ac14-0cf325904cd3.png)
+
+There are 15 tables in the DVD Rental database:
+
+- actor – stores actors data including first name and last name.
+- film – stores film data such as title, release year, length, rating, etc.
+- film_actor – stores the relationships between films and actors.
+- category – stores film’s categories data.
+- film_category- stores the relationships between films and categories.
+- store – contains the store data including manager staff and address.
+- inventory – stores inventory data.
+- rental – stores rental data.
+- payment – stores customer’s payments.
+- staff – stores staff data.
+- customer – stores customer data.
+- address – stores address data for staff and customers
+- city – stores city names.
+- country – stores country names.
