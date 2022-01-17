@@ -22,7 +22,22 @@ order by o.orderdate, o.customerid
 - 헬맷은, Products 테이블의 productname 컬럼을 이용해서 확인해주세요.
 
 ```sql
-
+select o.customerid 
+from orders o 
+join order_details od on o.ordernumber = od.ordernumber
+join products p on od.productnumber = p.productnumber 
+where p.productname not like '%Helmet%'
+group by o.customerid
+```
+```sql
+SELECT custfirstname || ' ' || custlastname AS full_name
+	FROM customers c
+WHERE NOT EXISTS(select *
+					from orders o 
+					join order_details od on o.ordernumber = od.ordernumber
+					join products p on od.productnumber = p.productnumber 
+					where o.customerid  = c.customerid  and p.productname like '%Helmet%'
+                 )
 ```
 
 3.모든 제품 과 주문 일자를 나열하세요. (주문되지 않은 제품도 포함해서 보여주세요.)
