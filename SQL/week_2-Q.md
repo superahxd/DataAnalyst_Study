@@ -68,7 +68,11 @@ group by nt.states
 5.공급 업체 와 판매 제품 수를 나열하세요. 단 판매 제품수가 2개 이상인 곳만 보여주세요.
 
 ```sql
-
+select v.vendname , count(pv.productnumber) as counts
+from product_vendors pv 
+join vendors v on pv.vendorid = v.vendorid 
+group by v.vendname
+having count(pv.productnumber) >= 2
 ```
 
 1. 가장 높은 주문 금액을 산 고객은 누구인가요?
