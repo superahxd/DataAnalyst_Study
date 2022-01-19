@@ -25,3 +25,10 @@ There are 15 tables in the DVD Rental database:
 - address – stores address data for staff and customers
 - city – stores city names.
 - country – stores country names.
+
+
+---
+### 공부 사이트
+
+Mode[https://mode.com/sql-tutorial/]
+w3school[https://www.w3schools.com/sql/]
