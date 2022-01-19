@@ -75,12 +75,46 @@ group by v.vendname
 having count(pv.productnumber) >= 2
 ```
 
-1. 가장 높은 주문 금액을 산 고객은 누구인가요?
+6. 가장 높은 주문 금액을 산 고객은 누구인가요?
 - 주문일자별, 고객의 아이디별로, 주문번호, 주문 금액도 함께 알려주세요.
 
 ```sql
-
+select sub.customerid, sum(sub.orderprice)
+from (
+	select o.ordernumber, o.customerid, o.orderdate , sum(od.quotedprice * od.quantityordered) as orderprice
+	from order_details od 
+	join orders o on od.ordernumber = o.ordernumber
+	group by o.ordernumber 
+	order by 1) sub
+group by 1
+order by sum(sub.orderprice) desc 
 ```
+
+```sql
+select orderdate, customerid, ordernumber,sum(prices) as order_price
+from (
+	select o.orderdate, o.customerid, o.ordernumber, od.productnumber,od.quotedprice * od.quantityordered as prices
+	from orders as o
+	join order_details as od 
+	on o.ordernumber = od.ordernumber	
+) as db
+group by orderdate, customerid , ordernumber
+order by order_price desc
+limit 1
+```
+
+서브쿼리에서 groupby 할 필요 없고 요구하는걸 바깥 쿼리에서 적어서 하면 된다..
+
+```sql
+select orderdate, customerid, ordernumber, sum(orderprice) as order_price
+from 
+	(select o.ordernumber, o.customerid, o.orderdate , od.quotedprice * od.quantityordered as orderprice
+	from order_details od 
+	join orders o on od.ordernumber = o.ordernumber) sub
+group by 1, 2, 3
+order by order_price desc 
+```
+
 
 7.주문일자별로, 주문 갯수와,  고객수를 알려주세요.
 
