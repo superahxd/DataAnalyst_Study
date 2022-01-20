@@ -121,6 +121,10 @@ order by order_price desc
 - ex) 하루에 한 고객이 주문을 2번이상했다고 가정했을때 -> 해당의 경우는 고객수는 1명으로 계산해야합니다.
 
 ```sql
+select o.orderdate , count(o.ordernumber), count(distinct o.customerid) 
+from orders o 
+group by 1
+order by 1
 
 ```
 
@@ -131,8 +135,68 @@ order by order_price desc
 - 타이어와 헬멧에 대해서는 , Products 테이블의 productname 컬럼을 이용해서 확인해주세요.
 
 ```sql
+select customerid
+from orders o 
+join order_details od on o.ordernumber=od.ordernumber 
+where od.productnumber in (
+	select productnumber 
+	from products p 
+	where productname like '%Tire%' or productname like '%Helmet%')
+group by 1
+order by 1
+```
+
+```sql
+SELECT c.customerid
+  FROM orders o
+JOIN customers c ON c.customerid  = o.customerid 
+JOIN order_details od ON od.ordernumber  = o.ordernumber  
+WHERE 1 = 1
+  AND od.productnumber IN (
+                          SELECT productnumber
+                            FROM products p 
+                          WHERE (productname like '%Helmet%' or productname like '%Tires%')
+                          )
+GROUP BY c.customerid
+ORDER BY customerid
+```
+1 = 1은 왜해준거지?
+
+
+10. 타이어는 샀지만, 헬멧을 사지 않은 고객의 ID 를 알려주세요. Except 조건을 사용하여, 풀이 해주세요.
+- 타이어, 헬멧에 대해서는, Products 테이블의 productname 컬럼을 이용해서 확인해주세요.
+
+```sql
+select distinct o.customerid
+from orders o 
+join order_details od on o.ordernumber = od.ordernumber 
+where od.productnumber in (select p.productnumber
+							from products p 
+							where p.productname like '%Tire%')
+except 
+select distinct o.customerid
+from orders o 
+join order_details od on o.ordernumber = od.ordernumber 
+where od.productnumber in (select p.productnumber
+							from products p 
+							where p.productname like '%Helmet%')
 
 ```
 
-1. 타이어는 샀지만, 헬멧을 사지 않은 고객의 ID 를 알려주세요. Except 조건을 사용하여, 풀이 해주세요.
-- 타이어, 헬멧에 대해서는, Products 테이블의 productname 컬럼을 이용해서 확인해주세요.
+```sql
+select o.customerid
+from orders o
+join order_details od on o.ordernumber = od.ordernumber
+join products p on od.productnumber =p.productnumber
+where p.productname like '%Tires'
+except
+select distinct o.customerid
+from orders o
+join order_details od on o.ordernumber = od.ordernumber
+join products p on od.productnumber = p.productnumber
+where p.productname like '%Helmet'
+```
+
+이문제는 그냥 조인을 하는게 더 간단해보인다.
+
+
