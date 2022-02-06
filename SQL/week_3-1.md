@@ -52,6 +52,25 @@ where exists (
 문제3번) 대여가 한번도이라도 된 영화 카테 고리 이름을 알려주세요. (쿼리는, Any 조건을 이용하여 풀어봅시다)
 
 ```sql
+select distinct "name"
+from category c
+join film_category fc on c.category_id = fc.category_id
+join inventory i on fc.film_id = i.film_id 
+where i.inventory_id = any(
+select inventory_id 
+from rental r 
+where rental_date is not null)
+```
+```sql
+select c.name
+from category as c
+where category_id = any (
+select fc.category_id
+from rental as r
+join inventory as i on r.inventory_id = i.inventory_id
+join film_category as fc on i.film_id = fc.film_id)
+
+)
 ```
 </br>
  
